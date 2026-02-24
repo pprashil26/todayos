@@ -28,8 +28,8 @@
   }
 
   header span a.inactive {
-    color: #999;
-    pointer-events: none;
+    color: #999; /* greyed out */
+    /* pointer-events removed so it remains clickable */
   }
 
   header button {
@@ -55,7 +55,7 @@
 <header>
   <span><a href="index.html" id="headerLink">Today OS</a></span>
   <button id="btnToday" onclick="switchApp('today')">Today</button>
-  <button id="btnTime" onclick="switchApp('time')">Time Tool</button>
+  <button id="btnTime" onclick="switchApp('time')">Time</button>
 </header>
 
 <main>
@@ -83,7 +83,7 @@ function switchApp(app){
     btnToday.classList.remove('active');
   }
 
-  // Grey out Today OS button when any tool is active
+  // Grey out Today OS visually but keep clickable
   headerLink.classList.add('inactive');
 
   // Save active app
