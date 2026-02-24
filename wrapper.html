@@ -27,9 +27,9 @@
     margin-right:40px;
   }
 
+  /* Only visual styling; clicks work normally */
   header span a.inactive {
-    color: #999; /* greyed out */
-    /* pointer-events removed so it remains clickable */
+    color: #999; 
   }
 
   header button {
@@ -83,10 +83,9 @@ function switchApp(app){
     btnToday.classList.remove('active');
   }
 
-  // Grey out Today OS visually but keep clickable
-  headerLink.classList.add('inactive');
+  // Remove greying in JS; link remains clickable
+  // headerLink.classList.add('inactive');
 
-  // Save active app
   localStorage.setItem('activeApp', app);
 }
 
