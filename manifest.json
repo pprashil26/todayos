@@ -1,0 +1,9 @@
+{
+  "name": "Today OS",
+  "short_name": "TodayOS",
+  "start_url": "wrapper.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": []
+}
