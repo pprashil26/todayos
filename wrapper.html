@@ -27,9 +27,8 @@
     margin-right:40px;
   }
 
-  /* Only visual styling; clicks work normally */
   header span a.inactive {
-    color: #999; 
+    color: #999; /* visually greyed when a tool is active */
   }
 
   header button {
@@ -55,7 +54,7 @@
 <header>
   <span><a href="index.html" id="headerLink">Today OS</a></span>
   <button id="btnToday" onclick="switchApp('today')">Today</button>
-  <button id="btnTime" onclick="switchApp('time')">Time</button>
+  <button id="btnTime" onclick="switchApp('time')">Time Tool</button>
 </header>
 
 <main>
@@ -76,23 +75,33 @@ function switchApp(app){
     timeFrame.classList.remove('active');
     btnToday.classList.add('active');
     btnTime.classList.remove('active');
-  } else {
+  } else if(app==='time'){
     timeFrame.classList.add('active');
     todayFrame.classList.remove('active');
     btnTime.classList.add('active');
     btnToday.classList.remove('active');
+  } else {
+    todayFrame.classList.remove('active');
+    timeFrame.classList.remove('active');
+    btnToday.classList.remove('active');
+    btnTime.classList.remove('active');
   }
 
-  // Remove greying in JS; link remains clickable
-  // headerLink.classList.add('inactive');
+  // Dynamically grey Today OS link if a tool is active
+  if(app==='today' || app==='time'){
+    headerLink.classList.add('inactive');
+  } else {
+    headerLink.classList.remove('inactive');
+  }
 
   localStorage.setItem('activeApp', app);
 }
 
-// On load: hash or last used
+// On load: use hash or last saved app
 const hash = window.location.hash.replace('#','');
-if(hash==='today'||hash==='time'){ switchApp(hash); }
-else { const saved = localStorage.getItem('activeApp') || 'today'; switchApp(saved); }
+let saved = localStorage.getItem('activeApp') || 'today';
+if(hash==='today'||hash==='time'){ saved = hash; }
+switchApp(saved);
 
 // Keyboard shortcuts
 document.addEventListener('keydown', e=>{
@@ -101,12 +110,12 @@ document.addEventListener('keydown', e=>{
 });
 
 // Mobile swipe support
-let touchStartX=null;
+let touchStartX = null;
 document.addEventListener('touchstart', e=>{ touchStartX=e.changedTouches[0].screenX; }, false);
 document.addEventListener('touchend', e=>{
   if(!touchStartX) return;
-  const touchEndX=e.changedTouches[0].screenX;
-  const diff=touchStartX-touchEndX;
+  const touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
   if(diff>50){ if(todayFrame.classList.contains('active')) switchApp('time'); else switchApp('today'); }
   else if(diff<-50){ if(timeFrame.classList.contains('active')) switchApp('today'); else switchApp('time'); }
   touchStartX=null;
