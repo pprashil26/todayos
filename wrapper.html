@@ -20,13 +20,16 @@
     background:#fff; position:sticky; top:0; z-index:10;
   }
 
-  header span {
-    font-weight:600; margin-right:40px;
-  }
-
   header span a {
     text-decoration:none;
     color: inherit;
+    font-weight:600;
+    margin-right:40px;
+  }
+
+  header span a.inactive {
+    color: #999;
+    pointer-events: none;
   }
 
   header button {
@@ -50,9 +53,9 @@
 <body>
 
 <header>
-  <span><a href="index.html">Today OS</a></span>
+  <span><a href="index.html" id="headerLink">Today OS</a></span>
   <button id="btnToday" onclick="switchApp('today')">Today</button>
-  <button id="btnTime" onclick="switchApp('time')">Time</button>
+  <button id="btnTime" onclick="switchApp('time')">Time Tool</button>
 </header>
 
 <main>
@@ -65,6 +68,7 @@ const todayFrame = document.getElementById('todayFrame');
 const timeFrame = document.getElementById('timeFrame');
 const btnToday = document.getElementById('btnToday');
 const btnTime = document.getElementById('btnTime');
+const headerLink = document.getElementById('headerLink');
 
 function switchApp(app){
   if(app==='today'){
@@ -72,17 +76,21 @@ function switchApp(app){
     timeFrame.classList.remove('active');
     btnToday.classList.add('active');
     btnTime.classList.remove('active');
-    localStorage.setItem('activeApp','today');
   } else {
     timeFrame.classList.add('active');
     todayFrame.classList.remove('active');
     btnTime.classList.add('active');
     btnToday.classList.remove('active');
-    localStorage.setItem('activeApp','time');
   }
+
+  // Grey out Today OS button when any tool is active
+  headerLink.classList.add('inactive');
+
+  // Save active app
+  localStorage.setItem('activeApp', app);
 }
 
-// Load app from hash or last used
+// On load: hash or last used
 const hash = window.location.hash.replace('#','');
 if(hash==='today'||hash==='time'){ switchApp(hash); }
 else { const saved = localStorage.getItem('activeApp') || 'today'; switchApp(saved); }
