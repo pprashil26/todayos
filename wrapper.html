@@ -44,11 +44,13 @@
   <span style="font-weight:600; margin-right:40px;">Today OS</span>
   <button id="btnToday" onclick="switchApp('today')">Today</button>
   <button id="btnTime" onclick="switchApp('time')">Time Tool</button>
+  <button id="btnJournal" onclick="switchApp('journal')">Private Journal</button>
 </header>
 
 <main>
   <iframe id="todayFrame" src="https://pprashil26.github.io/today/"></iframe>
   <iframe id="timeFrame" src="https://pprashil26.github.io/time/"></iframe>
+  <iframe id="journalFrame" src="private-journal.html"></iframe>
 </main>
 
 <script>
@@ -56,26 +58,38 @@ const todayFrame = document.getElementById('todayFrame');
 const timeFrame = document.getElementById('timeFrame');
 const btnToday = document.getElementById('btnToday');
 const btnTime = document.getElementById('btnTime');
+const journalFrame = document.getElementById('journalFrame');
+const btnJournal = document.getElementById('btnJournal');
 
 function switchApp(app){
+  // Hide all iframes
+  todayFrame.classList.remove('active');
+  timeFrame.classList.remove('active');
+  journalFrame.classList.remove('active');
+
+  // Remove active class from all buttons
+  btnToday.classList.remove('active');
+  btnTime.classList.remove('active');
+  btnJournal.classList.remove('active');
+
+  // Show selected app
   if(app==='today'){
     todayFrame.classList.add('active');
-    timeFrame.classList.remove('active');
     btnToday.classList.add('active');
-    btnTime.classList.remove('active');
-    localStorage.setItem('activeApp','today');
-  } else {
+  } else if(app==='time'){
     timeFrame.classList.add('active');
-    todayFrame.classList.remove('active');
     btnTime.classList.add('active');
-    btnToday.classList.remove('active');
-    localStorage.setItem('activeApp','time');
+  } else if(app==='journal'){
+    journalFrame.classList.add('active');
+    btnJournal.classList.add('active');
   }
+
+  localStorage.setItem('activeApp', app);
 }
 
 // Load app from hash or last used
 const hash = window.location.hash.replace('#','');
-if(hash==='today'||hash==='time'){ switchApp(hash); }
+if(hash==='today'||hash==='time'||hash==='journal'){ switchApp(hash); }
 else { const saved = localStorage.getItem('activeApp') || 'today'; switchApp(saved); }
 
 // Keyboard shortcuts
